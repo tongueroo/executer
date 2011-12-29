@@ -8,10 +8,10 @@ Gem::Specification.new do |s|
   s.name        = "executer"
   s.version     = '0.1.0'
   s.platform    = Gem::Platform::RUBY
-  s.authors     = []
-  s.email       = []
-  s.homepage    = "http://"
-  s.summary     = %q{}
+  s.authors     = ["Tung Nguyen"]
+  s.email       = ["tongueroo@gmail.com"]
+  s.homepage    = "https://github.com/tongueroo/executer"
+  s.summary     = %q{A daemon that executes commands given to it}
   s.description = %q{}
 
   s.executables = `cd #{root} && git ls-files bin/*`.split("\n").collect { |f| File.basename(f) }
