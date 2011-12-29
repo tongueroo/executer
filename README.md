@@ -1,36 +1,44 @@
 Executer
 ===========
 
-A gem template for new projects.
+A daemon that executes commands given to it. 
 
 Requirements
 ------------
 
-<pre>
-gem install stencil
-</pre>
+* redis
+* executer gem: gem install executer
 
-Setup the template
-------------------
+Setup
+------------
 
-You only have to do this once.
-
-<pre>
-git clone git@github.com:winton/executer.git
-cd executer
-stencil
-</pre>
-
-Setup a new project
--------------------
-
-Do this for every new project.
+You'll need to set up the executer.yml to point to the redis server executer will use.  Example:
 
 <pre>
-mkdir my_project
-git init
-stencil executer
-rake rename
+$ cat config/executer.yml
+redis: localhost:6379
 </pre>
 
-The last command does a find-replace (gem\_template -> my\_project) on files and filenames.
+To start the daemon:
+
+<pre>
+executer config/executer.yml
+
+Starting executer server (redis @ localhost:6379)...
+
+</pre>
+
+To use the client and push commands to the daemon:
+
+<pre>
+$ irb
+> require 'executer'
+> Executer::Client.new('localhost:6379').run :cmd => 'uname >> /tmp/uname.txt', :id => 1
+</pre>
+
+To verify that the command got executed:
+
+<pre>
+$ cat /tmp/uname.txt 
+Darwin
+</pre>

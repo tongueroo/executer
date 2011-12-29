@@ -1,7 +1,8 @@
 .DS_Store
 *.gem
 .bundle
-config/executioner.yml
+config/executer.yml
 Gemfile.lock
 pkg
 tmp
+*.log
