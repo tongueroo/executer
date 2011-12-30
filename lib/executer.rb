@@ -28,14 +28,17 @@ class Executer
     begin
       while true
         if request = redis.lpop('executer:request')
-          Timeout.timeout(60*60) do
-            request = Yajl::Parser.parse(request)
-            log("Running #{request.inspect}")
-            system(request['cmd'])
-            redis.publish(
-              "executer:response:#{request['id']}",
-              "finished"
-            )
+          Thread.new do
+            Timeout.timeout(60*60) do
+              request = Yajl::Parser.parse(request)
+              log("Running #{request.inspect}")
+              id = request['id']
+              success = system(request['cmd'])
+              redis.publish(
+                "executer:response:#{id}",
+                success.to_s
+              )
+            end
           end
         end
 

@@ -20,6 +20,7 @@ class Executer
       id = options[:id]
       options = Yajl::Encoder.encode(options)
 
+      success = nil
       Timeout.timeout(60*60) do
         @redis_1.subscribe("executer:response:#{id}") do |on|
           on.subscribe do |channel, subscriptions|
@@ -28,14 +29,13 @@ class Executer
           end
 
           on.message do |channel, message|
+            success = message
             log("Finished: #{message.inspect}")
-            if message == 'finished'
-              @redis_1.unsubscribe
-            end
+            @redis_1.unsubscribe
           end
         end
       end
-      true
+      success
     end
 
     def log(message)
