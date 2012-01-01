@@ -1,2 +1,2 @@
 redis: localhost:6379
-log: /var/log/executer.log
+log: executer.log
